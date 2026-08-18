@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>markoff — 在活的網頁上標記</title>
+<style>
+  :root{--ink:#111;--mute:#767676;--line:#e6e6e6;--accent:#c8102e;--bg:#fff}
+  @media (prefers-color-scheme:dark){
+    :root{--ink:#f2f2f2;--mute:#9a9a9a;--line:#2e2e2e;--bg:#141414}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.75 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
+  .wrap{max-width:720px;margin:0 auto;padding:64px 24px 180px}
+  h1{font-size:40px;line-height:1.2;margin:0 0 8px;letter-spacing:-.02em}
+  .sub{color:var(--mute);margin:0 0 40px;font-size:17px}
+  h2{font-size:22px;margin:48px 0 12px;letter-spacing:-.01em}
+  p{margin:0 0 16px}
+  .card{border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .swatch{height:76px;border-radius:10px;background:linear-gradient(135deg,#c8102e,#6a0d1d)}
+  .btn{display:inline-block;border:0;border-radius:999px;padding:12px 22px;
+    background:var(--accent);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  code{background:rgba(128,128,128,.14);padding:2px 6px;border-radius:5px;font-size:.9em}
+  pre{background:rgba(128,128,128,.1);padding:14px;border-radius:10px;overflow-x:auto;
+    font-size:13px;line-height:1.6}
+  .note{border-left:3px solid var(--accent);padding-left:14px;color:var(--mute)}
+  footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);
+    color:var(--mute);font-size:14px}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>markoff</h1>
+  <p class="sub">在活的網頁上標記，標完就結束。這一頁本身就是 demo——右下角有按鈕。</p>
+
+  <div class="note">
+    <p>這個頁面已經載入 markoff。按左下角的「留言」，然後點畫面上任何一個元素。
+    留言只會存在你自己的瀏覽器裡，不會送到任何地方。</p>
+  </div>
+
+  <h2>拿來標標看的東西</h2>
+  <p>下面這些元素刻意做得有點問題——間距、對比、行高。挑一個點下去，
+  打幾個字，看看留言長什麼樣。</p>
+
+  <div class="card">
+    <h2 style="margin-top:0">一張卡片</h2>
+    <p style="color:#999">這行文字的對比可能不太夠，在淺色底上偏灰。</p>
+    <button class="btn">主要按鈕</button>
+    <button class="btn ghost">次要按鈕</button>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div class="swatch"></div><p style="margin:12px 0 0">色塊 A</p></div>
+    <div class="card"><div class="swatch"></div><p style="margin:12px 0 0">色塊 B</p></div>
+    <div class="card"><div class="swatch"></div><p style="margin:12px 0 0">色塊 C</p></div>
+  </div>
+
+  <h2>標完之後</h2>
+  <p>按「匯出」下載 JSON。每一則會帶著這些東西：</p>
+  <pre>{
+  "id": "5f3c…",
+  "note": "這行對比不夠",
+  "element": { "selector": ".card > p", "text": "這行文字的對比…",
+               "computed": { "fontSize": "16px", "color": "rgb(153,153,153)" } },
+  "device": { "breakpointLabel": "桌機", "viewport": { "w": 1440 },
+              "screen": { "w": 1920, "ratio": 75 }, "browser": "Chrome" }
+}</pre>
+  <p><code>device</code> 這一段是重點：同一句「這裡太擠」，在手機和桌機是兩個問題。
+  <code>ratio</code> 是視窗佔螢幕多少——明顯小於 100 代表對方是刻意把視窗縮窄測 RWD，
+  不是螢幕本來就這麼小。</p>
+
+  <h2>裝進自己的專案</h2>
+  <pre>&lt;script src="markoff.js" data-project="my-site" defer&gt;&lt;/script&gt;</pre>
+  <p>然後開 <code>你的網址/?comment=1</code>。沒有這段 query 的一般訪客
+  完全看不到任何東西，所以可以跟正式站一起部署。</p>
+
+  <footer>
+    MIT License · Made by <a href="https://coreplay.tw">果核概念 Coreplay</a>
+  </footer>
+</div>
+
+<script src="../src/markoff.js" data-project="markoff-demo" defer></script>
+</body>
+</html>
