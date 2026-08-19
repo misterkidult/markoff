@@ -10,7 +10,7 @@
 
 **只在預覽階段用。** 正式上線前把這行 script 拿掉。
 
-**[開 demo 玩玩看 →](https://demo.coreplay.tw/markoff/)**
+**[開 demo 玩玩看 →](https://misterkidult.github.io/markoff/demo/)**
 
 ---
 
@@ -192,5 +192,5 @@ MIT
 
 ---
 
-Made by [果核概念 Coreplay](https://coreplay.tw) — 我們用它跟客戶與設計師校稿，
+Made by [果核概念 Coreplay](https://coreplay.com.tw) — 我們用它跟客戶與設計師校稿，
 中文叫「網頁校稿標記工具」。
