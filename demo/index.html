@@ -35,7 +35,7 @@
 <body>
 <div class="wrap">
   <h1>markoff</h1>
-  <p class="sub">在活的網頁上標記，標完就結束。這一頁本身就是 demo——右下角有按鈕。</p>
+  <p class="sub">在活的網頁上標記，標完就結束。這一頁本身就是 demo——左下角有按鈕。</p>
 
   <div class="note">
     <p>這個頁面已經載入 markoff。按左下角的「留言」，然後點畫面上任何一個元素。
@@ -83,6 +83,13 @@
   </footer>
 </div>
 
+<script>
+  // demo 頁專用：沒帶 ?comment=1 時自動補上，讓任何人點進來就能玩。
+  // 正式專案不需要這段——那裡的重點正是「沒有這個參數就完全不啟動」。
+  if (new URLSearchParams(location.search).get('comment') !== '1') {
+    location.replace(location.pathname + '?comment=1' + location.hash);
+  }
+</script>
 <script src="../src/markoff.js" data-project="markoff-demo" defer></script>
 </body>
 </html>

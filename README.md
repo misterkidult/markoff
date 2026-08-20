@@ -10,7 +10,7 @@
 
 **只在預覽階段用。** 正式上線前把這行 script 拿掉。
 
-**[開 demo 玩玩看 →](https://misterkidult.github.io/markoff/demo/)**
+**[開 demo 玩玩看 →](https://misterkidult.github.io/markoff/demo/?comment=1)**
 
 ---
 
@@ -25,7 +25,7 @@
 或直接從 jsDelivr 取用，什麼都不用複製：
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/misterkidult/markoff@main/src/markoff.js"
+<script src="https://cdn.jsdelivr.net/gh/misterkidult/markoff@master/src/markoff.js"
         data-project="my-site" defer></script>
 ```
 
