@@ -4,8 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>markoff — 在活的網頁上標記</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- ROND（圓體軸）必須列在 URL 裡，否則靜默退回方角 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap">
 <style>
   :root{--ink:#111;--mute:#767676;--line:#e6e6e6;--accent:#c8102e;--bg:#fff}
+  /* 果核 SNS design token（DESIGN-coreplay-sns.md）。品牌色，不隨深色模式變 */
+  :root{--cp-green:#C5FF4A;--cp-blue:#1C77E0;--cp-ink:#000;
+        --cp-grid:#E8E8E8;--cp-paper:#fff;--cp-stroke:3px;--cp-gap:36px}
   @media (prefers-color-scheme:dark){
     :root{--ink:#f2f2f2;--mute:#9a9a9a;--line:#2e2e2e;--bg:#141414}
   }
@@ -14,25 +21,49 @@
     font:16px/1.75 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
   .wrap{max-width:720px;margin:0 auto;padding:64px 24px 180px}
   h1{font-size:40px;line-height:1.2;margin:0 0 8px;letter-spacing:-.02em}
-  .hero{position:relative;margin:0 0 40px;border:1px solid var(--line);
-    border-radius:14px;overflow:hidden;background:#f6f4f1;aspect-ratio:16/9}
+  /* Hero＝果核 SNS 圖卡語言：白底方格紙、粗黑描邊、大圓角、螢光綠錯位陰影 */
+  .hero{position:relative;margin:0 0 52px;
+    border:var(--cp-stroke) solid var(--cp-ink);border-radius:24px;
+    overflow:hidden;background:var(--cp-paper);aspect-ratio:16/9;
+    box-shadow:12px 12px 0 var(--cp-green)}
   .hero img{display:block;width:100%;height:100%;object-fit:cover}
-  /* 由左透明漸變到右底色，讓文字永遠有乾淨的底，不受圖上記號位置影響 */
-  .hero::after{content:"";position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(90deg,
-      rgba(246,244,241,0) 28%, rgba(246,244,241,.88) 46%, rgba(246,244,241,.98) 62%)}
-  .hero-copy{position:absolute;top:0;right:0;bottom:0;width:58%;z-index:2;
+  /* 右半邊：插畫淡出成方格紙，字永遠有乾淨的底，不受圖上記號位置影響 */
+  .hero-sheet{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:
+      linear-gradient(var(--cp-grid) 1px,transparent 1px) 0 0/var(--cp-gap) var(--cp-gap),
+      linear-gradient(90deg,var(--cp-grid) 1px,transparent 1px) 0 0/var(--cp-gap) var(--cp-gap),
+      var(--cp-paper);
+    -webkit-mask-image:linear-gradient(90deg,transparent 26%,#000 52%);
+    mask-image:linear-gradient(90deg,transparent 26%,#000 52%)}
+  .hero-copy{position:absolute;top:0;right:0;bottom:0;width:56%;z-index:2;
     display:flex;flex-direction:column;justify-content:center;
     padding:0 32px 0 8px}
-  .hero-copy h1{margin:0 0 10px;color:var(--accent)}
-  .hero-copy .sub{margin:0;color:#444;font-size:16px}
+  /* logotype＝Google Sans Flex，ROND 開滿 */
+  .hero-copy h1{margin:0 0 16px;color:var(--cp-ink);font-size:44px;
+    font-family:"Google Sans Flex","Inter","Noto Sans TC",sans-serif;
+    font-variation-settings:"ROND" 100,"wdth" 100,"wght" 700;letter-spacing:-.01em}
+  /* 綠泡泡＝說話；上緣露出一層無描邊的綠色錯位背板 */
+  .hero-bubble{position:relative;align-self:flex-start;max-width:100%;
+    background:var(--cp-green);border:var(--cp-stroke) solid var(--cp-ink);
+    border-radius:18px;padding:10px 16px;margin:0;
+    color:var(--cp-ink);font-weight:700;font-size:16px;line-height:1.55}
+  .hero-bubble::before{content:"";position:absolute;inset:0;z-index:-1;
+    background:var(--cp-green);border-radius:18px;transform:translate(0,-8px)}
+  .hero-bubble::after{content:"";position:absolute;left:-9px;top:20px;
+    width:14px;height:14px;background:var(--cp-green);transform:rotate(45deg);
+    border-left:var(--cp-stroke) solid var(--cp-ink);
+    border-bottom:var(--cp-stroke) solid var(--cp-ink)}
+  /* 藍字＝內容／資訊 */
+  .hero-info{margin:16px 0 0;color:var(--cp-blue);font-weight:600;font-size:15px}
   @media (max-width:600px){
-    .hero{aspect-ratio:4/3}
-    .hero::after{background:linear-gradient(90deg,
-      rgba(246,244,241,0) 18%, rgba(246,244,241,.9) 38%, rgba(246,244,241,.99) 54%)}
-    .hero-copy{width:64%;padding:0 20px 0 4px}
-    .hero-copy h1{font-size:30px}
-    .hero-copy .sub{font-size:14px;line-height:1.6}
+    .hero{aspect-ratio:4/3;border-radius:18px;box-shadow:8px 8px 0 var(--cp-green);
+      --cp-gap:24px}
+    .hero-sheet{-webkit-mask-image:linear-gradient(90deg,transparent 30%,#000 56%);
+      mask-image:linear-gradient(90deg,transparent 30%,#000 56%)}
+    .hero-copy{width:56%;padding:0 16px 0 4px}
+    .hero-copy h1{font-size:30px;margin-bottom:12px}
+    .hero-bubble{font-size:13.5px;padding:8px 12px;border-radius:14px}
+    .hero-info{font-size:12.5px;margin-top:12px}
   }
   .sub{color:var(--mute);margin:0 0 40px;font-size:17px}
   h2{font-size:22px;margin:48px 0 12px;letter-spacing:-.01em}
@@ -56,9 +87,11 @@
 <div class="wrap">
   <div class="hero">
     <img src="hero.webp" alt="插畫：markoff 的角色 Makoto 拿著紅筆，身旁散落紅色校稿記號">
+    <div class="hero-sheet"></div>
     <div class="hero-copy">
       <h1>markoff</h1>
-      <p class="sub">在活的網頁上標記，標完就結束。<br>這一頁本身就是 demo——左下角有按鈕。</p>
+      <p class="hero-bubble">在活的網頁上標記，標完就結束。</p>
+      <p class="hero-info">這一頁本身就是 demo——左下角有按鈕。</p>
     </div>
   </div>
 
