@@ -48,28 +48,25 @@
   .hero-copy h1{margin:0 0 16px;color:var(--cp-ink);font-size:44px;
     font-family:"Google Sans Flex","Inter","Noto Sans TC",sans-serif;
     font-variation-settings:"ROND" 100,"wdth" 100,"wght" 700;letter-spacing:-.01em}
-  /* 綠泡泡＝說話。
-     外框不是圓角矩形和尾巴各自畫 border——那樣兩者的邊在接點永遠對不齊。
-     改成先把「圓角矩形 ∪ 三角形」疊成一個純綠色的形狀層，
-     再對這一層打四個方向的硬陰影當描邊，接縫在構造上就不可能出現。 */
+  /* 綠泡泡＝說話。泡泡本體用一般的 border 畫外框。 */
   .hero-bubble{--bub-r:18px;position:relative;align-self:flex-start;max-width:100%;
-    padding:11px 17px;margin:0;
+    background:var(--cp-green);border:var(--cp-stroke) solid var(--cp-ink);
+    border-radius:var(--bub-r);padding:10px 16px;margin:0;
     color:var(--cp-ink);font-weight:700;font-size:16px;line-height:1.55}
   /* 錯位背板：無描邊，從上緣露出來 */
   .hero-bubble::before{content:"";position:absolute;inset:0;z-index:-2;
     background:var(--cp-green);border-radius:var(--bub-r);transform:translate(0,-8px)}
-  .hero-shape{position:absolute;inset:0;z-index:-1;
-    filter:drop-shadow(0 calc(var(--cp-stroke) * -1) 0 var(--cp-ink))
-           drop-shadow(0 var(--cp-stroke) 0 var(--cp-ink))
-           drop-shadow(calc(var(--cp-stroke) * -1) 0 0 var(--cp-ink))
-           drop-shadow(var(--cp-stroke) 0 0 var(--cp-ink))}
-  .hero-shape::before{content:"";position:absolute;inset:0;
-    background:var(--cp-green);border-radius:var(--bub-r)}
-  /* 尾巴右緣往內插進矩形 4px，兩個形狀確實相交，聯集才會是一體的 */
-  /* 尖端留一小段平面，不做成針尖——硬陰影繞過銳角會凸出一顆黑點 */
-  .hero-shape::after{content:"";position:absolute;left:-11px;top:15px;
-    width:15px;height:22px;background:var(--cp-green);
-    clip-path:polygon(100% 0,0 44%,0 56%,100% 100%)}
+  /* 尾巴＝兩個三角形疊：黑的在下當外框，綠的疊上去並往右縮，
+     露出來的黑邊就是描邊。綠三角形的右緣往泡泡內部插，
+     蓋掉泡泡那一段左框線，接縫才會消失。 */
+  .hero-tail{position:absolute;left:-14px;top:15px;width:14px;height:21px}
+  .hero-tail::before,.hero-tail::after{content:"";position:absolute;
+    clip-path:polygon(100% 0,0 50%,100% 100%)}
+  .hero-tail::before{inset:0;background:var(--cp-ink)}
+  /* 綠三角形要跟黑三角形「相似」，黑邊才會等寬：
+     上下各內縮一個描邊寬，尖端則要退 stroke/sin(尖角一半) ≈ 5px（退 3px 不夠），
+     右緣往外 1px 蓋掉泡泡的左框線。 */
+  .hero-tail::after{left:5px;top:3px;bottom:3px;right:-1px;background:var(--cp-green)}
   /* 藍字＝內容／資訊 */
   .hero-info{margin:16px 0 0;color:var(--cp-blue);font-weight:600;font-size:15px}
   @media (max-width:600px){
@@ -80,7 +77,7 @@
     .hero-copy{width:56%;padding:0 16px 0 4px}
     .hero-copy h1{font-size:30px;margin-bottom:12px}
     .hero-bubble{--bub-r:14px;font-size:13.5px;padding:9px 13px}
-    .hero-shape::after{left:-9px;top:11px;width:12px;height:18px}
+    .hero-tail{left:-11px;top:12px;width:11px;height:17px}
     .hero-info{font-size:12.5px;margin-top:12px}
   }
   .sub{color:var(--mute);margin:0 0 40px;font-size:17px}
@@ -108,7 +105,7 @@
     <div class="hero-sheet"></div>
     <div class="hero-copy">
       <h1>markoff</h1>
-      <p class="hero-bubble"><span class="hero-shape" aria-hidden="true"></span>在活的網頁上標記，標完就結束。</p>
+      <p class="hero-bubble"><span class="hero-tail" aria-hidden="true"></span>在活的網頁上標記，標完就結束。</p>
       <p class="hero-info">這一頁本身就是 demo——左下角有按鈕。</p>
     </div>
   </div>
