@@ -9,12 +9,18 @@
 <!-- ROND（圓體軸）必須列在 URL 裡，否則靜默退回方角 -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap">
 <style>
-  :root{--ink:#111;--mute:#767676;--line:#e6e6e6;--accent:#c8102e;--bg:#fff}
+  /* --accent 做色塊（按鈕底、標線）；--accent-text 做「字」，
+     兩者分開是因為深色底上的紅字對比不夠，得調亮，但按鈕底不能跟著變 */
+  :root{--ink:#111;--mute:#767676;--line:#e6e6e6;
+        --accent:#c8102e;--accent-text:#c8102e;--bg:#fff}
   /* 果核 SNS design token（DESIGN-coreplay-sns.md）。品牌色，不隨深色模式變 */
   :root{--cp-green:#C5FF4A;--cp-blue:#1C77E0;--cp-ink:#000;
         --cp-grid:#E8E8E8;--cp-paper:#fff;--cp-stroke:3px;--cp-gap:36px}
   @media (prefers-color-scheme:dark){
-    :root{--ink:#f2f2f2;--mute:#9a9a9a;--line:#2e2e2e;--bg:#141414}
+    /* 深灰而非近黑：#242628 讓白色 hero 卡片不會像挖了個洞，
+       卡片、程式碼區塊、分隔線才有層次差可以疊 */
+    :root{--ink:#ededee;--mute:#a2a5a8;--line:#3a3d40;--bg:#242628;
+          --accent-text:#ff5a70}
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
@@ -42,17 +48,28 @@
   .hero-copy h1{margin:0 0 16px;color:var(--cp-ink);font-size:44px;
     font-family:"Google Sans Flex","Inter","Noto Sans TC",sans-serif;
     font-variation-settings:"ROND" 100,"wdth" 100,"wght" 700;letter-spacing:-.01em}
-  /* 綠泡泡＝說話；上緣露出一層無描邊的綠色錯位背板 */
-  .hero-bubble{position:relative;align-self:flex-start;max-width:100%;
-    background:var(--cp-green);border:var(--cp-stroke) solid var(--cp-ink);
-    border-radius:18px;padding:10px 16px;margin:0;
+  /* 綠泡泡＝說話。
+     外框不是圓角矩形和尾巴各自畫 border——那樣兩者的邊在接點永遠對不齊。
+     改成先把「圓角矩形 ∪ 三角形」疊成一個純綠色的形狀層，
+     再對這一層打四個方向的硬陰影當描邊，接縫在構造上就不可能出現。 */
+  .hero-bubble{--bub-r:18px;position:relative;align-self:flex-start;max-width:100%;
+    padding:11px 17px;margin:0;
     color:var(--cp-ink);font-weight:700;font-size:16px;line-height:1.55}
-  .hero-bubble::before{content:"";position:absolute;inset:0;z-index:-1;
-    background:var(--cp-green);border-radius:18px;transform:translate(0,-8px)}
-  .hero-bubble::after{content:"";position:absolute;left:-9px;top:20px;
-    width:14px;height:14px;background:var(--cp-green);transform:rotate(45deg);
-    border-left:var(--cp-stroke) solid var(--cp-ink);
-    border-bottom:var(--cp-stroke) solid var(--cp-ink)}
+  /* 錯位背板：無描邊，從上緣露出來 */
+  .hero-bubble::before{content:"";position:absolute;inset:0;z-index:-2;
+    background:var(--cp-green);border-radius:var(--bub-r);transform:translate(0,-8px)}
+  .hero-shape{position:absolute;inset:0;z-index:-1;
+    filter:drop-shadow(0 calc(var(--cp-stroke) * -1) 0 var(--cp-ink))
+           drop-shadow(0 var(--cp-stroke) 0 var(--cp-ink))
+           drop-shadow(calc(var(--cp-stroke) * -1) 0 0 var(--cp-ink))
+           drop-shadow(var(--cp-stroke) 0 0 var(--cp-ink))}
+  .hero-shape::before{content:"";position:absolute;inset:0;
+    background:var(--cp-green);border-radius:var(--bub-r)}
+  /* 尾巴右緣往內插進矩形 4px，兩個形狀確實相交，聯集才會是一體的 */
+  /* 尖端留一小段平面，不做成針尖——硬陰影繞過銳角會凸出一顆黑點 */
+  .hero-shape::after{content:"";position:absolute;left:-11px;top:15px;
+    width:15px;height:22px;background:var(--cp-green);
+    clip-path:polygon(100% 0,0 44%,0 56%,100% 100%)}
   /* 藍字＝內容／資訊 */
   .hero-info{margin:16px 0 0;color:var(--cp-blue);font-weight:600;font-size:15px}
   @media (max-width:600px){
@@ -62,7 +79,8 @@
       mask-image:linear-gradient(90deg,transparent 30%,#000 56%)}
     .hero-copy{width:56%;padding:0 16px 0 4px}
     .hero-copy h1{font-size:30px;margin-bottom:12px}
-    .hero-bubble{font-size:13.5px;padding:8px 12px;border-radius:14px}
+    .hero-bubble{--bub-r:14px;font-size:13.5px;padding:9px 13px}
+    .hero-shape::after{left:-9px;top:11px;width:12px;height:18px}
     .hero-info{font-size:12.5px;margin-top:12px}
   }
   .sub{color:var(--mute);margin:0 0 40px;font-size:17px}
@@ -80,7 +98,7 @@
   .note{border-left:3px solid var(--accent);padding-left:14px;color:var(--mute)}
   footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);
     color:var(--mute);font-size:14px}
-  a{color:var(--accent)}
+  a{color:var(--accent-text)}
 </style>
 </head>
 <body>
@@ -90,7 +108,7 @@
     <div class="hero-sheet"></div>
     <div class="hero-copy">
       <h1>markoff</h1>
-      <p class="hero-bubble">在活的網頁上標記，標完就結束。</p>
+      <p class="hero-bubble"><span class="hero-shape" aria-hidden="true"></span>在活的網頁上標記，標完就結束。</p>
       <p class="hero-info">這一頁本身就是 demo——左下角有按鈕。</p>
     </div>
   </div>
