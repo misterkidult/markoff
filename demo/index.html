@@ -103,6 +103,31 @@
   <p>然後開 <code>你的網址/?comment=1</code>。沒有這段 query 的一般訪客
   完全看不到任何東西，所以可以跟正式站一起部署。</p>
 
+  <h2>留言要存到哪，你自己決定</h2>
+  <p>上面那一行是<strong>純本機模式</strong>——就是這個 demo 現在的樣子。
+  留言存在對方的瀏覽器裡，靠「匯出」下載 JSON 帶回來。不用架後端，
+  但對方關掉分頁前得記得按匯出。</p>
+
+  <p>要讓留言自動送到你手上，有兩種接法：</p>
+
+  <div class="card">
+    <p style="margin-top:0"><strong>只是單純 POST</strong>——加一個屬性就好：</p>
+    <pre>&lt;script src="markoff.js" data-endpoint="/api/comments" defer&gt;&lt;/script&gt;</pre>
+    <p style="margin-bottom:0">留言會 POST 到那個網址。送不出去會自動重試。</p>
+  </div>
+
+  <div class="card">
+    <p style="margin-top:0"><strong>要送去 Google Sheets、Notion、Slack 或任何地方</strong>
+    ——掛一個 callback，想怎麼送都行：</p>
+    <pre>markoff.onSubmit = async (payload) =&gt; {
+  await fetch('你的網址', { method:'POST', body: JSON.stringify(payload) });
+};</pre>
+    <p style="margin-bottom:0">回傳的 Promise resolve 代表送成功，pin 會變實心。</p>
+  </div>
+
+  <p class="note">兩種接法的完整說明、payload 長什麼樣、失敗怎麼重試，
+  都在 <a href="https://github.com/misterkidult/markoff#接自己的後端">README</a>。</p>
+
   <footer>
     MIT License · Made by <a href="https://coreplay.com.tw">果核概念 Coreplay</a>
   </footer>
