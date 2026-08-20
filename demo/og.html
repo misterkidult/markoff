@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>markoff OG 圖來源</title>
+<!--
+  這是 demo/og.png 的來源檔，不是給人看的頁面。
+  要改分享卡片的文字或配色，改這裡然後重拍：
+    npx playwright screenshot --viewport-size=1200,630 demo/og.html demo/og.png
+  社群平台不跑 CSS，所以文字必須燒進圖裡——這正是原本抓 hero.webp 會右半空白的原因。
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap">
+<style>
+  /* 果核 SNS design token（DESIGN-coreplay-sns.md），與 demo 頁 hero 同一組值 */
+  :root{--cp-green:#C5FF4A;--cp-blue:#1C77E0;--cp-ink:#000;
+        --cp-grid:#E8E8E8;--cp-paper:#fff;--cp-stroke:5px;--cp-gap:60px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1200px;height:630px;overflow:hidden;background:var(--cp-paper);
+    font:16px/1.75 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
+  .card{position:relative;width:1200px;height:630px;overflow:hidden;
+    background:var(--cp-paper)}
+  .card img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}
+  /* 右半邊：插畫淡出成方格紙，字有乾淨的底 */
+  .sheet{position:absolute;inset:0;
+    background:
+      linear-gradient(var(--cp-grid) 1px,transparent 1px) 0 0/var(--cp-gap) var(--cp-gap),
+      linear-gradient(90deg,var(--cp-grid) 1px,transparent 1px) 0 0/var(--cp-gap) var(--cp-gap),
+      var(--cp-paper);
+    -webkit-mask-image:linear-gradient(90deg,transparent 24%,#000 46%);
+    mask-image:linear-gradient(90deg,transparent 24%,#000 46%)}
+  .copy{position:absolute;right:0;top:0;bottom:0;width:56%;z-index:2;
+    display:flex;flex-direction:column;justify-content:center;padding:0 64px 0 16px}
+  h1{color:var(--cp-ink);font-size:104px;line-height:1;margin-bottom:34px;
+    font-family:"Google Sans Flex","Inter","Noto Sans TC",sans-serif;
+    font-variation-settings:"ROND" 100,"wdth" 100,"wght" 700;letter-spacing:-.02em}
+  /* 綠泡泡＝說話。黑三角形墊底＋綠三角形疊上，綠須與黑相似黑邊才等寬 */
+  .bubble{--bub-r:30px;position:relative;align-self:flex-start;
+    background:var(--cp-green);border:var(--cp-stroke) solid var(--cp-ink);
+    border-radius:var(--bub-r);padding:16px 26px;
+    color:var(--cp-ink);font-weight:700;font-size:34px;line-height:1.5}
+  .bubble::before{content:"";position:absolute;inset:0;z-index:-2;
+    background:var(--cp-green);border-radius:var(--bub-r);transform:translate(0,-13px)}
+  .tail{position:absolute;left:-23px;top:24px;width:23px;height:35px}
+  .tail::before,.tail::after{content:"";position:absolute;
+    clip-path:polygon(100% 0,0 50%,100% 100%)}
+  .tail::before{inset:0;background:var(--cp-ink)}
+  .tail::after{left:8px;top:5px;bottom:5px;right:-2px;background:var(--cp-green)}
+  .by{margin-top:38px;color:var(--cp-blue);font-weight:600;font-size:24px}
+</style>
+</head>
+<body>
+  <div class="card">
+    <img src="hero.webp" alt="">
+    <div class="sheet"></div>
+    <div class="copy">
+      <h1>markoff</h1>
+      <p class="bubble"><span class="tail"></span>在活的網頁上標記</p>
+      <p class="by">給設計師與客戶的網頁校稿工具</p>
+    </div>
+  </div>
+</body>
+</html>
