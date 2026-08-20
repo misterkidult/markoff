@@ -151,13 +151,18 @@
       display:flex;gap:8px;align-items:center;transition:bottom .2s;
       flex-direction:row-reverse;
       font:14px/1.5 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}
+    /* 白色光圈是為了深色網站：#111 的按鈕貼在深色底上會整顆消失。
+       光圈在淺色底上跟背景同色、看不出來，在深色底上才浮出輪廓，
+       所以不必知道host頁是深是淺就能兩邊都看得見。 */
     .dcmt-btn{border:0;border-radius:999px;padding:12px 20px;cursor:pointer;
-      background:#111;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.28);
+      background:#111;color:#fff;
+      box-shadow:0 0 0 2px rgba(255,255,255,.92),0 4px 16px rgba(0,0,0,.28);
       font:inherit;font-weight:600;white-space:nowrap;transition:transform .12s}
     .dcmt-btn:active{transform:scale(.96)}
     .dcmt-btn[data-on="1"]{background:#c8102e}
+    /* 白底按鈕反過來：淺色底上要一圈深輪廓才不會糊掉 */
     .dcmt-btn.dcmt-ghost{background:#fff;color:#111;font-weight:500;
-      box-shadow:0 2px 12px rgba(0,0,0,.18)}
+      box-shadow:0 0 0 1px rgba(0,0,0,.14),0 2px 12px rgba(0,0,0,.18)}
 
     /* 留言模式下的 hover／點按外框 */
     .dcmt-hl{position:absolute;pointer-events:none;z-index:${Z - 2};
